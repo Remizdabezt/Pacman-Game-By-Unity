@@ -1,15 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     public Ghost[] ghosts;
     public Pacman pacman;
     public Transform pellets;
 
-    public Text gameOverText;
-    public Text scoreText;
-    public Text livesText;
+    public TextMeshPro gameOverText;
+    public TextMeshPro scoreText;
+    public TextMeshPro livesText;
+    public TextMeshPro winningText;
+
+    public AudioSource backGroundAudio;
+    public AudioSource deathAudio;
+    public AudioSource gameOverAudio;
+    public AudioSource winningAudio;
 
     public int ghostMultiplier { get; private set; } = 1;
     public int score { get; private set; }
@@ -30,6 +36,8 @@ public class GameManager : MonoBehaviour
 
     private void NewGame()
     {
+        winningAudio.Stop();
+        backGroundAudio.Play();
         SetScore(0);
         SetLives(3);
         NewRound();
@@ -38,6 +46,7 @@ public class GameManager : MonoBehaviour
     private void NewRound()
     {
         gameOverText.enabled = false;
+        winningText.enabled = false;
 
         foreach (Transform pellet in pellets)
         {
@@ -60,7 +69,7 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         gameOverText.enabled = true;
-
+        gameOverAudio.Play();
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].gameObject.SetActive(false);
@@ -72,19 +81,19 @@ public class GameManager : MonoBehaviour
     private void SetLives(int lives)
     {
         this.lives = lives;
-        livesText.text = "x" + lives.ToString();
+        livesText.text = "Lives : x" + lives.ToString();
     }
 
     private void SetScore(int score)
     {
         this.score = score;
-        scoreText.text = score.ToString().PadLeft(2, '0');
+        scoreText.text = "Score :" + score.ToString().PadLeft(2, '0');
     }
 
     public void PacmanEaten()
     {
         pacman.DeathSequence();
-
+        deathAudio.Play();
         SetLives(lives - 1);
 
         if (lives > 0)
@@ -114,7 +123,10 @@ public class GameManager : MonoBehaviour
         if (!HasRemainingPellets())
         {
             pacman.gameObject.SetActive(false);
-            Invoke(nameof(NewRound), 3f);
+            Invoke(nameof(NewGame), 3f);
+            winningText.enabled = true;
+            backGroundAudio.Stop();
+            winningAudio.Play();
         }
     }
 

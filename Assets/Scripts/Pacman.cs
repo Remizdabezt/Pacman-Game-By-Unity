@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Movement))]
 public class Pacman : MonoBehaviour
 {
-    public AnimatedSprite deathSequence;
+    //public AnimatedSprite deathSequence;
     public SpriteRenderer spriteRenderer { get; private set; }
     public new Collider2D collider { get; private set; }
     public Movement movement { get; private set; }
@@ -45,8 +45,8 @@ public class Pacman : MonoBehaviour
         enabled = true;
         spriteRenderer.enabled = true;
         collider.enabled = true;
-        deathSequence.enabled = false;
-        deathSequence.spriteRenderer.enabled = false;
+        //deathSequence.enabled = false;
+        //deathSequence.spriteRenderer.enabled = false;
         movement.ResetState();
         gameObject.SetActive(true);
     }
@@ -57,9 +57,9 @@ public class Pacman : MonoBehaviour
         spriteRenderer.enabled = false;
         collider.enabled = false;
         movement.enabled = false;
-        deathSequence.enabled = true;
-        deathSequence.spriteRenderer.enabled = true;
-        deathSequence.Restart();
+        //deathSequence.enabled = true;
+        //deathSequence.spriteRenderer.enabled = true;
+        //deathSequence.Restart();
     }
 
 }
