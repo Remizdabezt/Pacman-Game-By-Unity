@@ -1,6 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using System;
+
+[System.Serializable]
 public class GameManager : MonoBehaviour
 {
     public Ghost[] ghosts;
@@ -11,6 +13,8 @@ public class GameManager : MonoBehaviour
     public TextMeshPro scoreText;
     public TextMeshPro livesText;
     public TextMeshPro winningText;
+    public TextMeshPro highestScoreText;
+    public int highestScore;
 
     public AudioSource backGroundAudio;
     public AudioSource deathAudio;
@@ -24,6 +28,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         NewGame();
+        LoadFromJson();
     }
 
     private void Update()
@@ -74,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             ghosts[i].gameObject.SetActive(false);
         }
-
+        SaveToJson();
         pacman.gameObject.SetActive(false);
     }
 
@@ -88,6 +93,11 @@ public class GameManager : MonoBehaviour
     {
         this.score = score;
         scoreText.text = "Score :" + score.ToString().PadLeft(2, '0');
+        if (score >= highestScore)
+        {
+            highestScore = score;
+            highestScoreText.text = "Top Score: " + highestScore.ToString();
+        }
     }
 
     public void PacmanEaten()
@@ -151,7 +161,7 @@ public class GameManager : MonoBehaviour
                 return true;
             }
         }
-
+        SaveToJson();
         return false;
     }
 
@@ -159,5 +169,16 @@ public class GameManager : MonoBehaviour
     {
         ghostMultiplier = 1;
     }
-
+    public void SaveToJson ()
+    {
+        string highestScoreData = JsonUtility.ToJson(highestScore);
+        string filePath = Application.persistentDataPath + "/HighestScore.json";
+        System.IO.File.WriteAllText(filePath, highestScoreData);
+    }
+    public void LoadFromJson ()
+    {
+        string filePath = Application.persistentDataPath + "/HighestScore.json";
+        string highestScoreData = System.IO.File.ReadAllText(filePath);
+        highestScore = JsonUtility.FromJson<int>(highestScoreData);
+    }
 }
