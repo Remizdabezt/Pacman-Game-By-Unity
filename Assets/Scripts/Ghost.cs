@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Movement))]
 public class Ghost : MonoBehaviour
 {
+    public Rigidbody2D rigidBody { get; private set; }
     public Movement movement { get; private set; }
     public GhostHome home { get; private set; }
     public GhostScatter scatter { get; private set; }
@@ -15,6 +16,7 @@ public class Ghost : MonoBehaviour
 
     private void Awake()
     {
+        rigidBody = GetComponent<Rigidbody2D>();
         movement = GetComponent<Movement>();
         home = GetComponent<GhostHome>();
         scatter = GetComponent<GhostScatter>();
@@ -44,8 +46,7 @@ public class Ghost : MonoBehaviour
 
     public void SetPosition(Vector3 position)
     {
-        position.z = transform.position.z;
-        transform.position = position;
+        rigidBody.position = position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

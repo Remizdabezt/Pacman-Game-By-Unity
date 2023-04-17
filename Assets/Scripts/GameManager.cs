@@ -71,12 +71,14 @@ public class GameManager : MonoBehaviour
 
     private void ResetState()
     {
+        ResetGhostMultiplier();
         for (int i = 0; i < ghosts.Length; i++)
         {
+            ghosts[i].movement.isLoad = false;
             ghosts[i].ResetState();
         }
-
         pacman.ResetState();
+        pacman.movement.isLoad = false;
     }
 
     private void GameOver()
@@ -211,7 +213,7 @@ public class GameManager : MonoBehaviour
         saveData.ghostChaseDuration[index] = this.ghosts[index].chase.DurationRemaining();
         saveData.ghostFrightenedDuration[index] = this.ghosts[index].frightenned.DurationRemaining();
         saveData.ghostScatterDuration[index] = this.ghosts[index].scatter.DurationRemaining();
-        saveData.ghostElapsed[index] = this.ghosts[index].home.elapsed;
+        saveData.ghostElapsed[index] = this.ghosts[index].home.Elapsed;
     }
     private void LoadGhostData(SaveData loadData, int index)
     {
