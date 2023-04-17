@@ -5,65 +5,67 @@ public class GhostHome : GhostBehavior
 {
     public Transform inside;
     public Transform outside;
-
+    public float elapsed { get; private set; }
     private void OnEnable()
     {
-        StopAllCoroutines();
+        if (this.gameObject.activeSelf)
+        {
+            StopAllCoroutines();
+        }
+        this.elapsed = 0;
     }
 
     private void OnDisable()
     {
-        // Check for active self to prevent error when object is destroyed
-        if (gameObject.activeInHierarchy)
+        if (this.gameObject.activeSelf)
         {
-            StartCoroutine(ExitTransition());
+            StartExit(0);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Reverse direction everytime the ghost hits a wall to create the
-        // effect of the ghost bouncing around the home
         if (enabled && collision.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
         {
             ghost.movement.SetDirection(-ghost.movement.direction);
         }
     }
 
-    private IEnumerator ExitTransition()
+    private IEnumerator ExitTransition(float elapsed)
     {
-        // Turn off movement while we manually animate the position
-        ghost.movement.SetDirection(Vector2.up, true);
-        ghost.movement.rigidbody.isKinematic = true;
-        ghost.movement.enabled = false;
+        this.ghost.movement.SetDirection(Vector2.up, true);
+        this.ghost.movement.rigidbody.isKinematic = true;
+        this.ghost.movement.enabled = false;
 
-        Vector3 position = transform.position;
+        Vector3 position = this.transform.position;
+        float duration1 = 0.5f;
+        float duration2 = 1f;
 
-        float duration = 0.5f;
-        float elapsed = 0f;
-
-        // Animate to the starting point
-        while (elapsed < duration)
+        while (elapsed <= duration1)
         {
-            ghost.SetPosition(Vector3.Lerp(position, inside.position, elapsed / duration));
+            Vector3 newPosition = Vector3.Lerp(position, this.inside.position, elapsed / duration1);
+            newPosition.z = position.z;
+            this.ghost.transform.position = newPosition;
             elapsed += Time.deltaTime;
+            this.elapsed = elapsed;
             yield return null;
         }
-
-        elapsed = 0f;
-
-        // Animate exiting the ghost home
-        while (elapsed < duration)
+        while (elapsed <= (duration2 + 0.35f))
         {
-            ghost.SetPosition(Vector3.Lerp(inside.position, outside.position, elapsed / duration));
+            Vector3 newPosition = Vector3.Lerp(this.inside.position, this.outside.position, (elapsed - 0.5f) / (duration2 - 0.5f));
+            newPosition.z = position.z;
+            this.ghost.transform.position = newPosition;
             elapsed += Time.deltaTime;
+            this.elapsed = elapsed;
             yield return null;
         }
-
-        // Pick a random direction left or right and re-enable movement
-        ghost.movement.SetDirection(new Vector2(Random.value < 0.5f ? -1f : 1f, 0f), true);
-        ghost.movement.rigidbody.isKinematic = false;
-        ghost.movement.enabled = true;
+        this.ghost.movement.SetDirection(new Vector2(Random.value < 0.5 ? -1f : 1f, 0f), true);
+        this.ghost.movement.rigidbody.isKinematic = false;
+        this.ghost.movement.enabled = true;
+        this.elapsed = 0;
     }
-
+    public void StartExit(float elapsed)
+    {
+        StartCoroutine(ExitTransition(elapsed));
+    }
 }

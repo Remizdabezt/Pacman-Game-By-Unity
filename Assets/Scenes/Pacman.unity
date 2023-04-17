@@ -309,6 +309,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf5ac5ecca760f438f74baf3ef55fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveData:
+    pacmanDirection: {x: 0, y: 0}
+    pacmanPosition: {x: 0, y: 0, z: 0}
+    isPacmanActive: 0
+    score: 0
+    lives: 0
+    pellets: 
+    ghostDirection: []
+    ghostPosition: []
+    ghostHome: 
+    ghostFrightened: 
+    ghostChase: 
+    ghostScatter: 
+    ghostHomeDuration: []
+    ghostChaseDuration: []
+    ghostFrightenedDuration: []
+    ghostScatterDuration: []
+    ghostElapsed: []
   ghosts:
   - {fileID: 1273959356}
   - {fileID: 1056074369}
@@ -321,7 +339,6 @@ MonoBehaviour:
   livesText: {fileID: 1624052888}
   winningText: {fileID: 802720415}
   highestScoreText: {fileID: 1363877102}
-  highestScore: 0
   backGroundAudio: {fileID: 747707252}
   deathAudio: {fileID: 630284368}
   gameOverAudio: {fileID: 1208922952}
@@ -333,7 +350,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288267020}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3517,7 +3534,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802720413}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
@@ -4867,7 +4884,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.57, y: 9.92}
+  m_AnchoredPosition: {x: 16.9, y: 9.92}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1363877102
@@ -11207,7 +11224,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862793228}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
@@ -11529,6 +11546,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
+  isLoad: 0
 --- !u!1 &2046777011
 GameObject:
   m_ObjectHideFlags: 0

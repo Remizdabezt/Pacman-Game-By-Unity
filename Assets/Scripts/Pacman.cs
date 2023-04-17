@@ -7,17 +7,17 @@ public class Pacman : MonoBehaviour
     public SpriteRenderer spriteRenderer { get; private set; }
     public new Collider2D collider { get; private set; }
     public Movement movement { get; private set; }
-
+    public Rigidbody2D rigidBody { get; private set; }
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
         movement = GetComponent<Movement>();
+        rigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        // Set the new direction based on the current input
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             movement.SetDirection(Vector2.up);
@@ -35,7 +35,6 @@ public class Pacman : MonoBehaviour
             movement.SetDirection(Vector2.right);
         }
 
-        // Rotate pacman to face the movement direction
         float angle = Mathf.Atan2(movement.direction.y, movement.direction.x);
         transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.forward);
     }
@@ -61,5 +60,8 @@ public class Pacman : MonoBehaviour
         //deathSequence.spriteRenderer.enabled = true;
         //deathSequence.Restart();
     }
-
+    public void SetPosition(Vector3 position)
+    {
+        this.rigidBody.position = position;
+    }
 }
